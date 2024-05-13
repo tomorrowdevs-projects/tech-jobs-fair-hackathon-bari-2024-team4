@@ -138,11 +138,14 @@ input{
     border: none;
     border-radius: .5rem;
     box-shadow: 0 0.1rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+    color: #0e5696;
 }
 
 input::placeholder{
     color: #aaa;
+
 }
 
-/* CATEGORIES */
-
+input:focus{
+    outline: none;
+}
