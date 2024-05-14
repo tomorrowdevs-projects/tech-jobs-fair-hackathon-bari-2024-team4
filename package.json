@@ -4,6 +4,7 @@
   "description": "L'obiettivo finale dell'attività è lavorare su di un progetto ripercorrendo le stesse modalità di lavoro in azienda.",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js", //Aggiunto comando di avvio definito perchè senza abbiamo solo il comando di test
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
