@@ -47,7 +47,6 @@
 .hud-prefix {
   text-align: center;
   font-size: 2rem;
-  color: #0e5696;
 }
 
 .hud-main-text {
@@ -56,6 +55,7 @@
 
 #timer-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-bottom: 1rem;
 }
@@ -64,6 +64,19 @@
   font-size: 2rem;
   font-weight: bold;
   color: #0e5696;
+}
+
+#feedback {
+  font-size: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #a7a4a4;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+
+#feedback.running-out {
+  color: #d80c0c;
 }
 
 /* LOADER */
