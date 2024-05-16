@@ -1,0 +1,4 @@
+node_modules/
+
+# File usato solo per fare prove con js
+test.js

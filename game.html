@@ -6,9 +6,18 @@
     <title>Trivia Quiz</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/game.css">
+    <script src="/socket.io/socket.io.js"></script>
     <script src="javascript/game.js" defer></script>
 </head>
 <body>
+  <!-- different from thea -->
+  <div id="ready-box">
+    <button id = "ready-btn"></button>
+    <ul id = "ready-list">
+
+    </ul>
+  </div>
+  <!-- different from thea -->
   <div class="container">
     <div id="loader"></div>
     <div id="game" class="justify-center flex-column hidden">
