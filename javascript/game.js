@@ -39,17 +39,13 @@ const socket = io();
 socket.on("firstConnection", ru => {
 	readyUsers = ru;
 	handleReadyUsers();
-	if (!gameStarted) {
-		// readyBtn.id = "readyBtn"; 
-		readyBtn.innerHTML = "Ready";
-		readyBtn.addEventListener("click", e => {
-			readyBtn.disabled = true;
-			socket.emit("pressedReady", username);
-		});
-	} else {
-		//decidere cosa fare in caso di accesso a partita gia iniziata
-		console.log("Game already started");
-	}
+
+	readyBtn.innerHTML = "Ready";
+	readyBtn.addEventListener("click", e => {
+		readyBtn.disabled = true;
+		socket.emit("pressedReady", username);
+	});
+	
 });
 
 //Un altro utente ha messo pronto

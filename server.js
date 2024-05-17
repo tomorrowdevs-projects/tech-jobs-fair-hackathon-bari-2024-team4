@@ -14,9 +14,9 @@ const sampleUrl =
 var connectedUsers = 0;
 var readyUsers = [];
 var ranking = [];
-
-
 var currentQuestions = [];
+
+var gameStarted ; 
 
 app.use("/css", express.static(__dirname + "/css"));
 app.use("/javascript", express.static(__dirname + "/javascript"));
@@ -28,6 +28,13 @@ io.on("connection", socket => {
 	connectedUsers++;
 	console.log("number of users connected :", connectedUsers);
 
+	if (gameStarted){
+		socket.emit(
+			"ranking",
+			ranking.sort((a, b) => b.score - a.score)
+		);
+		return
+	}
 	io.emit("firstConnection", readyUsers.map(o => o.username));
 
 
@@ -53,6 +60,7 @@ io.on("connection", socket => {
 			//per ora, una volta collegati i giocatori si parte direttamente;
 			//si potrebbe mettere invece un altro evento "loading"
 			// in cui si mostra ai giocatori che la partita sta iniziando
+			gameStarted = true; 
 			fetch(sampleUrl)
 				.then(res => res.json())
 				.then(data => {
@@ -68,6 +76,7 @@ io.on("connection", socket => {
 		ranking.push(userScore);
 		// per ora assumo che il numero di utenti ready è uguale al numero di giocatori
 		if (readyUsers.length === ranking.length) {
+			gameStarted = false ; 
 			io.emit(
 				"ranking",
 				ranking.sort((a, b) => b.score - a.score)
@@ -86,8 +95,6 @@ io.on("connection", socket => {
 			console.log("error: ")
 			console.log("ranking ->",ranking)
 			console.log("filter ->",readyUsers.filter(o => o.socketId === socket.socketId ))
-			
-
 		}
 		readyUsers = readyUsers.filter(o => o.socketId !== socket.socketId );
 		console.log("users disconnected->", readyUsers);
