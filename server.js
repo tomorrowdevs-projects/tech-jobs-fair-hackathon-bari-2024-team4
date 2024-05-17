@@ -15,7 +15,6 @@ var connectedUsers = 0;
 var readyUsers = [];
 var ranking = [];
 
-
 var currentQuestions = [];
 
 app.use("/css", express.static(__dirname + "/css"));
@@ -28,25 +27,22 @@ io.on("connection", socket => {
 	connectedUsers++;
 	console.log("number of users connected :", connectedUsers);
 
-	io.emit("firstConnection", readyUsers.map(o => o.username));
-
+	io.emit(
+		"firstConnection",
+		readyUsers.map(o => o.username)
+	);
 
 	//creare evento errore user con stesso nome gia presente
 
-
 	socket.on("pressedReady", username => {
-		
-		if (readyUsers.map(o => o.username).includes(username)){
+		if (readyUsers.map(o => o.username).includes(username)) {
 			// non capisco perchè ma è necessario questo controllo, se si avviano 2 client e si fa partire dal primo da errore
-			console.log("ERROR ready called twice"); 
-			return; 
+			console.log("ERROR ready called twice");
+			return;
 		}
 
-
-
-
 		console.log(username, " is ready");
-		readyUsers.push({"username":username , "sockedId":socket.id});
+		readyUsers.push({ username: username, sockedId: socket.id });
 		console.log("ready users : ", readyUsers);
 		if (readyUsers.length >= 2 && readyUsers.length === connectedUsers) {
 			console.log("Game starting with ", readyUsers.length, " users!");
@@ -60,7 +56,10 @@ io.on("connection", socket => {
 					io.emit("gameStarting", currentQuestions); //passare anche domande
 				});
 		} else {
-			io.emit("readyUsers", readyUsers.map(o => o.username));
+			io.emit(
+				"readyUsers",
+				readyUsers.map(o => o.username)
+			);
 		}
 	});
 
@@ -78,18 +77,20 @@ io.on("connection", socket => {
 	socket.on("disconnect", () => {
 		//aggiungere gestione disconnessione quando user si disconnette dopo che ha messo pronto
 		console.log("socket ", socket.id, "disconnected");
-		try{
-			let tmpUsername = readyUsers.filter(o => o.socketId === socket.socketId )[0].username
+		try {
+			let tmpUsername = readyUsers.filter(
+				o => o.socketId === socket.socketId
+			)[0].username;
 			ranking = ranking.filter(o => o.username !== tmpUsername);
+		} catch (error) {
+			console.log("error: ");
+			console.log("ranking ->", ranking);
+			console.log(
+				"filter ->",
+				readyUsers.filter(o => o.socketId === socket.socketId)
+			);
 		}
-		catch(error){
-			console.log("error: ")
-			console.log("ranking ->",ranking)
-			console.log("filter ->",readyUsers.filter(o => o.socketId === socket.socketId ))
-			
-
-		}
-		readyUsers = readyUsers.filter(o => o.socketId !== socket.socketId );
+		readyUsers = readyUsers.filter(o => o.socketId !== socket.socketId);
 		console.log("users disconnected->", readyUsers);
 		console.log("ranking disconnected->", ranking);
 		connectedUsers--;

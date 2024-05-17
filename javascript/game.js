@@ -27,6 +27,7 @@ let availableQuestions = [];
 let timer;
 let timeLeft = 30;
 let ranking = [];
+let ranking = [];
 
 let questions = [];
 
@@ -40,7 +41,7 @@ socket.on("firstConnection", ru => {
 	readyUsers = ru;
 	handleReadyUsers();
 	if (!gameStarted) {
-		// readyBtn.id = "readyBtn"; 
+		// readyBtn.id = "readyBtn";
 		readyBtn.innerHTML = "Ready";
 		readyBtn.addEventListener("click", e => {
 			readyBtn.disabled = true;
@@ -84,7 +85,7 @@ socket.on("gameStarting", q => {
 
 		return formattedQuestion;
 	});
-	readyBtn.remove(); 
+	readyBtn.remove();
 	console.log("game starting");
 	startGame();
 	//
@@ -100,6 +101,7 @@ function handleReadyUsers() {
 function startGame() {
 	questionCounter = 0;
 	score = 0;
+	animateChoicesFromRight();
 	// availableQuestions = [...questions];
 	getNewQuestion();
 	game.classList.remove("hidden");
@@ -131,9 +133,11 @@ getNewQuestion = () => {
 		const number = choice.dataset["number"];
 		choice.innerHTML = currentQuestion["choice" + number];
 	});
+	resetChoicesPosition(); // Reset the position of answer choices
+	animateChoicesFromRight(); // Animate the answer choices sliding in from the right
 	// availableQuestions.splice(questionIndex, 1);
 	acceptingAnswers = true;
-	applyChoicesOnClick(); 
+	applyChoicesOnClick();
 	timeLeft = 10;
 	startTimer();
 };
@@ -143,10 +147,6 @@ startTimer = () => {
 		timeLeft--;
 		updateTimerUI(timeLeft);
 		if (timeLeft === 0) {
-
-
-
-
 			clearInterval(timer);
 			questionCounter++;
 			getNewQuestion();
@@ -174,8 +174,8 @@ updateTimerUI = time => {
 // 		if (classToApply === "correct") {
 // 			incrementScore(CORRECT_BONUS);
 // 		}
-		
-// 		// console.log("parent element : " ,selectedChoice.parentElement ); 
+
+// 		// console.log("parent element : " ,selectedChoice.parentElement );
 // 		selectedChoice.parentElement.classList.add(classToApply);
 
 // 		setTimeout(() => {
@@ -186,38 +186,37 @@ updateTimerUI = time => {
 // 	});
 // });
 
-
-
-
-
 const applyChoicesOnClick = () => {
 	choices.forEach(choice => {
-
 		choice.addEventListener("click", e => {
 			if (!acceptingAnswers) return;
-	
+
 			acceptingAnswers = false;
 			// clearInterval(timer);
-	
-			console.log("e.target:" , e.target); 
-			console.log("choice:" , choice); 
+
+			console.log("e.target:", e.target);
+			console.log("choice:", choice);
 			const selectedChoice = choice;
 			const selectedAnswer = selectedChoice.dataset["number"];
-	
+
 			const classToApply =
 				selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
-	
+
 			if (classToApply === "correct") {
 				incrementScore(CORRECT_BONUS);
 			}
-	
+
 			selectedChoice.parentElement.classList.add(classToApply);
 
-			setInterval(() => {selectedChoice.parentElement.classList.remove(classToApply)},1000);
-
+			setInterval(() => {
+				selectedChoice.parentElement.classList.remove(classToApply);
+				questionCounter++;
+				animateChoicesFromRight(); // Call animation function from animation.js
+				getNewQuestion();
+			}, 1000);
 
 			// console.log("element added: ", selectedChoice.parentElement.classList)
-	
+
 			// setInterval(() => {
 			// 	if (timeLeft === 0){
 			// 		setTimeout(() => {
@@ -229,12 +228,11 @@ const applyChoicesOnClick = () => {
 			// 		},1000)
 
 			// 	}
-	
+
 			// }, 500);
 		});
 	});
-} 
-
+};
 
 incrementScore = num => {
 	score += num + timeLeft;
@@ -265,13 +263,11 @@ function showRanking() {
 	const rankingModal = document.getElementById("ranking");
 	rankingModal.classList.remove("hidden");
 
-	homeBtn.innerHTML = "Home"; 
+	homeBtn.innerHTML = "Home";
 	homeBtn.addEventListener("click", e => {
 		socket.emit("pressedReady", username);
-		return window.location.assign('/');
-	})
-
-
+		return window.location.assign("/");
+	});
 }
 
 // fetch(

@@ -6,6 +6,14 @@
   min-height: 100vh; 
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  min-height: 100vh; 
+}
+
 .choice-container {
   display: flex;
   margin-bottom: 0.5rem;
