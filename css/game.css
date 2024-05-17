@@ -19,8 +19,8 @@
   padding: 1.5rem 2.5rem;
   background-color: #0e5696;
   color: white;
-  border-top-left-radius: .7rem;
-  border-bottom-left-radius: .7rem;
+  border-top-left-radius: 0.7rem;
+  border-bottom-left-radius: 0.7rem;
 }
 
 .choice-text {
@@ -67,9 +67,10 @@
 
 /* LOADER */
 #loader {
-  border: 1.6rem solid white;
+  border: 1.6rem solid #fcf9f4;
   border-radius: 50%;
-  border-top: 1.6rem solid #0e5696;
+  border-top: 1.6rem solid rgb(21, 74, 189);
+  border-radius: 50%;
   width: 12rem;
   height: 12rem;
   animation: spin 2s linear infinite;
