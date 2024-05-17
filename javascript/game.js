@@ -39,17 +39,12 @@ const socket = io();
 socket.on("firstConnection", ru => {
 	readyUsers = ru;
 	handleReadyUsers();
-	if (!gameStarted) {
-		// readyBtn.id = "readyBtn";
-		readyBtn.innerHTML = "Ready";
-		readyBtn.addEventListener("click", e => {
-			readyBtn.disabled = true;
-			socket.emit("pressedReady", username);
-		});
-	} else {
-		//decidere cosa fare in caso di accesso a partita gia iniziata
-		console.log("Game already started");
-	}
+
+	readyBtn.innerHTML = "Ready";
+	readyBtn.addEventListener("click", e => {
+		readyBtn.disabled = true;
+		socket.emit("pressedReady", username);
+	});
 });
 
 //Un altro utente ha messo pronto
@@ -59,6 +54,11 @@ socket.on("readyUsers", ru => {
 });
 
 socket.on("ranking", rnk => {
+	if (rnk.length === 0) {
+		readyBtn.remove();
+		endGame();
+		return;
+	}
 	ranking = rnk;
 	handleRanking();
 	loader.classList.add("hidden");
@@ -117,7 +117,7 @@ getNewQuestion = () => {
 	if (questionCounter === MAX_QUESTIONS) {
 		endGame();
 		localStorage.setItem("mostRecentScore", score);
-		console.log("Game ended");
+		console.log("Game already started , wait to see the ranking!");
 		socket.emit("userScore", { username: username, score: score });
 		return;
 	}
@@ -241,7 +241,8 @@ incrementScore = num => {
 function endGame() {
 	game.classList.add("hidden");
 	loader.classList.remove("hidden");
-	waitingText.innerText = "Waiting for other players score";
+	waitingText.innerText =
+		"Game already started , wait for the results to start a new one!";
 	socket.emit("getRanking");
 }
 
