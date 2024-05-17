@@ -27,7 +27,6 @@ let availableQuestions = [];
 let timer;
 let timeLeft = 30;
 let ranking = [];
-let ranking = [];
 
 let questions = [];
 
@@ -133,7 +132,7 @@ getNewQuestion = () => {
 		const number = choice.dataset["number"];
 		choice.innerHTML = currentQuestion["choice" + number];
 	});
-	resetChoicesPosition(); // Reset the position of answer choices
+	//resetChoicesPosition(); // Reset the position of answer choices
 	animateChoicesFromRight(); // Animate the answer choices sliding in from the right
 	// availableQuestions.splice(questionIndex, 1);
 	acceptingAnswers = true;
@@ -192,7 +191,7 @@ const applyChoicesOnClick = () => {
 			if (!acceptingAnswers) return;
 
 			acceptingAnswers = false;
-			// clearInterval(timer);
+			clearInterval(timer);
 
 			console.log("e.target:", e.target);
 			console.log("choice:", choice);
@@ -208,7 +207,7 @@ const applyChoicesOnClick = () => {
 
 			selectedChoice.parentElement.classList.add(classToApply);
 
-			setInterval(() => {
+			setTimeout(() => {
 				selectedChoice.parentElement.classList.remove(classToApply);
 				questionCounter++;
 				animateChoicesFromRight(); // Call animation function from animation.js
