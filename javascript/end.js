@@ -21,6 +21,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localStorage.setItem('highScores', JSON.stringify(highScores));
 });
-
-
-
