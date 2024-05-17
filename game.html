@@ -10,26 +10,26 @@
 		<script src="javascript/game.js" defer></script>
 	</head>
 	<body>
-		<!-- different from thea -->
-		<!-- different from thea -->
 		<!--Element for ranking-->
-		<div id="ranking" class="hidden">
+		<div id="ranking" class="ranking hidden">
 			<h2>Ranking</h2>
 			<ol id="ranking-list"></ol>
+			<!-- (vittorio) added return to home screen  -->
+			<button id = "home-btn" class="home-btn"></button>
 		</div>
 		<!--Element for ranking-->
-		<h3 id="waitingText" class="waitingText"></h3>
+		
 		<div class="container">
+			<h3 id="waitingText" class="waitingText"></h3>
+			<!-- different from thea -->
 			<div class="ready-container">
 				<div id="ready-box">
 					<button id="ready-btn" class="readyBtn"></button>
 					<ul id="ready-list"></ul>
-				
-				<div id="loader"></div>
+					<div id="loader"></div>
 				</div>
-
 			</div>
-			
+			<!-- different from thea -->
 
 			<div id="game" class="justify-center flex-column hidden">
 				<div id="hud">
