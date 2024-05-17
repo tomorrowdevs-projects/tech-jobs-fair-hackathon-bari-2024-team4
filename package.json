@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 {
   "name": "tech-jobs-fair-hackathon-bari-2024-team4",
   "version": "1.0.0",
@@ -18,7 +18,7 @@
     "socket.io": "^4.7.5"
   }
 }
-=======
+
 {
   "name": "tech-jobs-fair-hackathon-bari-2024-team4",
   "version": "1.0.0",
@@ -38,4 +38,4 @@
     "socket.io": "^4.7.5"
   }
 }
->>>>>>> daf904951d9a766b9966ea141750c44adc36377e
+
