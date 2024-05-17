@@ -84,8 +84,8 @@ socket.on("gameStarting", q => {
     });
 
     console.log("game starting");
+    readyBtn.remove();
     startGame();
-	readyBtn.parentNode.removeChild(readyBtn);
     //
 });
 
@@ -158,7 +158,7 @@ startTimer = () => {
             questionCounter++;
             getNewQuestion();
         }
-    }, 1000);
+    }, 1000000);
 };
 
 updateTimerUI = time => {
