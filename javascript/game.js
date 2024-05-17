@@ -115,17 +115,10 @@ function handleRanking() {
 getNewQuestion = () => {
 	if (questionCounter === MAX_QUESTIONS) {
 		endGame();
-		//inviare score a server o calcolare tutto su frontend?
 		localStorage.setItem("mostRecentScore", score);
-		//funziona con express? capire se gestirla con risposta a socket
-
-		// per ora solo console.log della classifica
-
 		console.log("Game ended");
 		socket.emit("userScore", { username: username, score: score });
-
 		return;
-		// return window.location.assign('/end.html');
 	}
 	progressText.innerText = `Question ${questionCounter + 1}/${MAX_QUESTIONS}`;
 
@@ -134,18 +127,13 @@ getNewQuestion = () => {
 	currentQuestion = questions[questionCounter];
 	question.innerHTML = currentQuestion.question;
 
-	console.log("Questions -> ", questions);
-	// console.log("Available Quesitions -> ", availableQuestions);
-	// console.log("questionIndex -> ", questionIndex);
-	// console.log("questionCounter", questionCounter);
-
 	choices.forEach(choice => {
 		const number = choice.dataset["number"];
 		choice.innerHTML = currentQuestion["choice" + number];
 	});
-
 	// availableQuestions.splice(questionIndex, 1);
 	acceptingAnswers = true;
+	applyChoicesOnClick(); 
 	timeLeft = 10;
 	startTimer();
 };
@@ -155,46 +143,101 @@ startTimer = () => {
 		timeLeft--;
 		updateTimerUI(timeLeft);
 		if (timeLeft === 0) {
+
+
+
+
 			clearInterval(timer);
 			questionCounter++;
 			getNewQuestion();
 		}
-	}, 1000000);
+	}, 1000);
 };
 
 updateTimerUI = time => {
 	timerElement.textContent = `Time: ${time}s`;
 };
+//1
+// choices.forEach(choice => {
+// 	choice.addEventListener("click", e => {
+// 		if (!acceptingAnswers) return;
 
-choices.forEach(choice => {
-	choice.addEventListener("click", e => {
-		if (!acceptingAnswers) return;
+// 		acceptingAnswers = false;
+// 		clearInterval(timer);
 
-		acceptingAnswers = false;
-		clearInterval(timer);
+// 		const selectedChoice = e.target;
+// 		const selectedAnswer = selectedChoice.dataset["number"];
 
-		const selectedChoice = e.target;
-		const selectedAnswer = selectedChoice.dataset["number"];
+// 		const classToApply =
+// 			selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
 
-		const classToApply =
-			selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+// 		if (classToApply === "correct") {
+// 			incrementScore(CORRECT_BONUS);
+// 		}
+		
+// 		// console.log("parent element : " ,selectedChoice.parentElement ); 
+// 		selectedChoice.parentElement.classList.add(classToApply);
 
-		if (classToApply === "correct") {
-			incrementScore(CORRECT_BONUS);
-		}
+// 		setTimeout(() => {
+// 			selectedChoice.parentElement.classList.remove(classToApply);
+// 			questionCounter++;
+// 			getNewQuestion();
+// 		}, 1000);
+// 	});
+// });
 
-		selectedChoice.parentElement.classList.add(classToApply);
 
-		setTimeout(() => {
-			selectedChoice.parentElement.classList.remove(classToApply);
-			questionCounter++;
-			getNewQuestion();
-		}, 1000);
+
+
+
+const applyChoicesOnClick = () => {
+	choices.forEach(choice => {
+
+		choice.addEventListener("click", e => {
+			if (!acceptingAnswers) return;
+	
+			acceptingAnswers = false;
+			// clearInterval(timer);
+	
+			console.log("e.target:" , e.target); 
+			console.log("choice:" , choice); 
+			const selectedChoice = choice;
+			const selectedAnswer = selectedChoice.dataset["number"];
+	
+			const classToApply =
+				selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+	
+			if (classToApply === "correct") {
+				incrementScore(CORRECT_BONUS);
+			}
+	
+			selectedChoice.parentElement.classList.add(classToApply);
+
+			setInterval(() => {selectedChoice.parentElement.classList.remove(classToApply)},1000);
+
+
+			// console.log("element added: ", selectedChoice.parentElement.classList)
+	
+			// setInterval(() => {
+			// 	if (timeLeft === 0){
+			// 		setTimeout(() => {
+			// 			selectedChoice.parentElement.classList.remove(classToApply);
+			// 			console.log("element removed: ", selectedChoice.parentElement.classList)
+			// 			clearInterval(timer);
+			// 			questionCounter++;
+			// 			getNewQuestion();
+			// 		},1000)
+
+			// 	}
+	
+			// }, 500);
+		});
 	});
-});
+} 
+
 
 incrementScore = num => {
-	score += num;
+	score += num + timeLeft;
 	scoreText.innerText = score;
 };
 
