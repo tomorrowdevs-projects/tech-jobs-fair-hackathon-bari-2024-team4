@@ -1,17 +1,17 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
-  min-height: 100vh; 
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
-  min-height: 100vh; 
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .choice-container {
@@ -35,8 +35,8 @@
   padding: 1.5rem 2.5rem;
   background-color: #0e5696;
   color: white;
-  border-top-left-radius: .7rem;
-  border-bottom-left-radius: .7rem;
+  border-top-left-radius: 0.7rem;
+  border-bottom-left-radius: 0.7rem;
 }
 
 .choice-text {
@@ -46,12 +46,12 @@
 }
 
 .choice-container.correct {
-  background-color: #39e361;;
+  background-color: #39e361;
   color: white;
 }
 
 .incorrect.choice-container {
-  background-color: #f13ca0;;
+  background-color: #f13ca0;
   color: white;
 }
 
@@ -92,7 +92,6 @@
   margin-top: 1rem;
 }
 
-
 #feedback.running-out {
   color: #d80c0c;
 }
@@ -113,17 +112,12 @@
   height: 20vh;
   width: 20vw;
   border-radius: 70px 70px 100px 100px;
-  background: linear-gradient(
-    45deg,
-    #6999c4,
-    #1480e0
-  );
+  background: linear-gradient(45deg, #6999c4, #1480e0);
   color: white;
   font-size: 20px;
   font-weight: bold;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
-
 
 @keyframes spin {
   0% {
@@ -176,10 +170,10 @@
 }
 
 .hidden {
-  display: none!important;
+  display: none !important;
 }
 
-.modal-content p{
+.modal-content p {
   text-align: center;
   color: #0e5696;
   font-size: 1.6rem;
@@ -188,29 +182,24 @@
 .waitingText {
   font-size: 2rem;
   color: #0e5696;
-  font-weight: bold; 
+  font-weight: bold;
   text-align: center;
   margin-block: 40px;
 }
 
-.ready-container{
+.ready-container {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-.readyBtn{
+.readyBtn {
   margin-block: 1rem 2.6rem;
   font-size: 1.6rem;
   height: 70px;
   width: 120px;
   border-radius: 70px 70px 100px 100px;
-  background: linear-gradient(
-    45deg,
-    #6999c4,
-    #1480e0
-  );
+  background: linear-gradient(45deg, #6999c4, #1480e0);
   color: white;
   cursor: pointer;
 }
@@ -255,15 +244,11 @@
   margin-bottom: 0;
 }
 
-.home-btn{
+.home-btn {
   height: 50px;
   width: 100px;
   border-radius: 70px 70px 100px 100px;
-  background: linear-gradient(
-    45deg,
-    #6999c4,
-    #1480e0
-  );
+  background: linear-gradient(45deg, #6999c4, #1480e0);
   color: white;
   cursor: pointer;
   font-size: 1.6rem;
