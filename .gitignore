@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 node_modules/
 
 # File usato solo per fare prove con js
 test.js
+=======
+node_modules/
+>>>>>>> daf904951d9a766b9966ea141750c44adc36377e
