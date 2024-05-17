@@ -1,5 +1,6 @@
 //X
 const express = require("express");
+const { read } = require("fs");
 const http = require("http");
 const socketIo = require("socket.io");
 
@@ -12,11 +13,9 @@ const sampleUrl =
 	"https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
 
 var connectedUsers = 0;
-var readyUsers = new Set();
-
+var readyUsers = [];
 var ranking = [];
 
-//aggiungere errore caso username doppione
 
 var currentQuestions = [];
 
@@ -30,14 +29,28 @@ io.on("connection", socket => {
 	connectedUsers++;
 	console.log("number of users connected :", connectedUsers);
 
-	io.emit("firstConnection", Array.from(readyUsers));
+	io.emit("firstConnection", readyUsers.map(o => o.username));
+
+
+	//creare evento errore user con stesso nome gia presente
+
 
 	socket.on("pressedReady", username => {
+		
+		if (readyUsers.map(o => o.username).includes(username)){
+			// non capisco perchè ma è necessario questo controllo, se si avviano 2 client e si fa partire dal primo da errore
+			console.log("ERROR ready called twice"); 
+			return; 
+		}
+
+
+
+
 		console.log(username, " is ready");
-		readyUsers.add(username);
+		readyUsers.push({"username":username , "sockedId":socket.id});
 		console.log("ready users : ", readyUsers);
-		if (readyUsers.size >= 2 && readyUsers.size === connectedUsers) {
-			console.log("Game starting with ", readyUsers.size, " users!");
+		if (readyUsers.length >= 2 && readyUsers.length === connectedUsers) {
+			console.log("Game starting with ", readyUsers.length, " users!");
 			//per ora, una volta collegati i giocatori si parte direttamente;
 			//si potrebbe mettere invece un altro evento "loading"
 			// in cui si mostra ai giocatori che la partita sta iniziando
@@ -48,14 +61,14 @@ io.on("connection", socket => {
 					io.emit("gameStarting", currentQuestions); //passare anche domande
 				});
 		} else {
-			io.emit("readyUsers", Array.from(readyUsers));
+			io.emit("readyUsers", readyUsers.map(o => o.username));
 		}
 	});
 
 	socket.on("userScore", userScore => {
 		ranking.push(userScore);
-		// per ora assumo che il numero di utenti connessi sia = al numero di giocaotori
-		if (connectedUsers === ranking.length) {
+		// per ora assumo che il numero di utenti ready è uguale al numero di giocatori
+		if (readyUsers.length === ranking.length) {
 			io.emit(
 				"ranking",
 				ranking.sort((a, b) => b.score - a.score)
@@ -66,6 +79,20 @@ io.on("connection", socket => {
 	socket.on("disconnect", () => {
 		//aggiungere gestione disconnessione quando user si disconnette dopo che ha messo pronto
 		console.log("socket ", socket.id, "disconnected");
+		try{
+			let tmpUsername = readyUsers.filter(o => o.socketId === socket.socketId )[0].username
+			ranking = ranking.filter(o => o.username !== tmpUsername);
+		}
+		catch(error){
+			console.log("error: ")
+			console.log("ranking ->",ranking)
+			console.log("filter ->",readyUsers.filter(o => o.socketId === socket.socketId ))
+			
+
+		}
+		readyUsers = readyUsers.filter(o => o.socketId !== socket.socketId );
+		console.log("users disconnected->", readyUsers);
+		console.log("ranking disconnected->", ranking);
 		connectedUsers--;
 		console.log("users", connectedUsers);
 	});

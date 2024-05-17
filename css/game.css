@@ -98,6 +98,24 @@
   height: 12rem;
   animation: spin 2s linear infinite;
 }
+#readyBtnStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  width: 20vw;
+  border-radius: 70px 70px 100px 100px;
+  background: linear-gradient(
+    45deg,
+    #6999c4,
+    #1480e0
+  );
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+}
+
 
 @keyframes spin {
   0% {

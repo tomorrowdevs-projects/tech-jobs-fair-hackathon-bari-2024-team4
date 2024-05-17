@@ -5,6 +5,7 @@ const MAX_QUESTIONS = 10;
 const readyBox = document.getElementById("ready-box");
 const readyList = document.getElementById("ready-list");
 const readyBtn = document.getElementById("ready-btn");
+const homeBtn = document.getElementById("home-btn");
 
 let userReady = false;
 let gameStarted = false;
@@ -39,10 +40,11 @@ socket.on("firstConnection", ru => {
 	readyUsers = ru;
 	handleReadyUsers();
 	if (!gameStarted) {
+		// readyBtn.id = "readyBtn"; 
 		readyBtn.innerHTML = "Ready";
 		readyBtn.addEventListener("click", e => {
-			socket.emit("pressedReady", username);
 			readyBtn.disabled = true;
+			socket.emit("pressedReady", username);
 		});
 	} else {
 		//decidere cosa fare in caso di accesso a partita gia iniziata
@@ -82,7 +84,7 @@ socket.on("gameStarting", q => {
 
 		return formattedQuestion;
 	});
-
+	readyBtn.remove(); 
 	console.log("game starting");
 	startGame();
 	//
@@ -91,7 +93,8 @@ socket.on("gameStarting", q => {
 function handleReadyUsers() {
 	//per ora console log , si può fare una schermata che mostra i giocatori
 	//attenzione al caso in cui la partita è gia iniziata
-	console.log("There are ", readyUsers.length, "ready users");
+
+	console.log("There are ", readyUsers.length, "ready users: ");
 }
 
 function startGame() {
@@ -218,6 +221,14 @@ function showRanking() {
 
 	const rankingModal = document.getElementById("ranking");
 	rankingModal.classList.remove("hidden");
+
+	homeBtn.innerHTML = "Home"; 
+	homeBtn.addEventListener("click", e => {
+		socket.emit("pressedReady", username);
+		return window.location.assign('/');
+	})
+
+
 }
 
 // fetch(
